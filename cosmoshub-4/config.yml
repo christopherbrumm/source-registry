@@ -2,7 +2,7 @@
 source-id: "cosmoshub-4"
 config-version: 1
 properties:
-  title: "Cosmos Hub"
+  title: "Cosmos"
   hex: "#1c2049"
   logo: "ar://GSK9zAQx1jOnQIhbM20qCoOFYT3EJXIJfwfvT_QhLVM"
 
