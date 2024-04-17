@@ -55,7 +55,7 @@ jobs:
         with:
           token: ${{ secrets.PAT_TOKEN }}
           commit-message: 🎉 Release new registry.yml
-          committer: kyve-network <security@kyve.network>
+          committer: kyve-network
           author: security@kyve.network
           branch: $next_branch
           delete-branch: true
