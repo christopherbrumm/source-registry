@@ -17,6 +17,10 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v2
 
+      - name: Install required Python packages
+        run: pip install -r .github/requirements.txt
+        working-directory: ${{ github.workspace }}
+
       - name: Determine the latest release version
         id: extract_version
         run: |
