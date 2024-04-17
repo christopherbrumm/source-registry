@@ -27,11 +27,11 @@ jobs:
 
       - name: Commit and push built registry
         env:
-          GITHUB_TOKEN: ${{ secrets.TEST_TOKEN }}
+          PAT: ${{ secrets.PAT }} # Use the PAT secret
         run: |
           git config --local user.email "security@kyve.network"
           git config --local user.name "kyve-network"
           git add .github/registry.yml
           git commit -m "🎉 Update registry.yml"
-          git push origin HEAD:main
+          git push --force-with-lease https://github.com/christopherbrumm/source-registry.git HEAD:main
         working-directory: ${{ github.workspace }}
