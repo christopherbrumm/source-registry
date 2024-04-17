@@ -25,13 +25,26 @@ jobs:
         run: python .github/build_registry.py .github/registry.yml
         working-directory: ${{ github.workspace }}
 
+      - name: Determine next branch number
+        id: next_branch_number
+        run: |
+          latest_branch=$(git for-each-ref --sort=-refname --format='%(refname:short)' refs/heads/feat/registry-v1.* | head -n 1)
+          if [ -z "$latest_branch" ]; then
+            next_number=1
+          else
+            latest_number=$(echo "$latest_branch" | grep -oE '[0-9]+$')
+            next_number=$((latest_number + 1))
+          fi
+          echo "::set-output name=next_number::$next_number"
+        shell: bash
+
       - name: Commit and push built registry
-        env:
-          PAT: ${{ secrets.PAT }} # Use the PAT secret
         run: |
           git config --local user.email "security@kyve.network"
           git config --local user.name "kyve-network"
+          next_branch="feat/registry-v1.${{ steps.next_branch_number.outputs.next_number }}"
+          git checkout -b "$next_branch"
           git add .github/registry.yml
           git commit -m "🎉 Update registry.yml"
-          git push --force-with-lease https://github.com/christopherbrumm/source-registry.git HEAD:main
+          git push origin "$next_branch"
         working-directory: ${{ github.workspace }}
