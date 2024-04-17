@@ -25,11 +25,21 @@ jobs:
         run: python .github/build_registry.py .github/registry.yml
         working-directory: ${{ github.workspace }}
 
-      - name: Commit and push built registry
-        run: |
-          git config --local user.email "security@kyve.network"
-          git config --local user.name "kyve-network"
-          git add .github/registry.yml
-          git commit -m "🎉 Update registry.yml"
-          git push -f
-        working-directory: ${{ github.workspace }}
+      - name: Create Pull Request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: '🎉 Update registry.yml'
+          title: 'Automated Pull Request to release new Source-Registry'
+          body: 'This is an automated pull request.'
+          branch: 'main'
+          base: 'main'
+
+      - name: Merge Pull Request
+        if: steps.create_pr.outputs.pull-request-number
+        uses: peter-evans/merge-pull-request-action@v3
+        with:
+          pull-request-number: ${{ steps.create_pr.outputs.pull-request-number }}
+          merge-method: 'squash'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
