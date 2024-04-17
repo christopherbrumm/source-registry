@@ -54,8 +54,9 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.PAT_TOKEN }}
+          base: main
           commit-message: 🎉 Release new registry.yml
-          branch: $next_branch
+          branch: release/v1.1
           delete-branch: true
           title: 🎉 New release - $next_branch
           body: Update registry
