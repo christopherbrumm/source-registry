@@ -21,6 +21,11 @@ jobs:
         run: pip install -r .github/requirements.txt
         working-directory: ${{ github.workspace }}
 
+      - name: Install hub
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y hub
+
       - name: Determine the latest release version
         id: extract_version
         run: |
