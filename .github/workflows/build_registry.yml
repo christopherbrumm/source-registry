@@ -25,6 +25,9 @@ jobs:
         run: python .github/build_registry.py .github/registry.yml
         working-directory: ${{ github.workspace }}
 
+      - name: Pull latest changes from remote
+        run: git pull origin main
+
       - name: Determine next branch number
         id: next_branch_number
         run: |
