@@ -55,7 +55,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.PAT_TOKEN }}
           commit-message: 🎉 Release new registry.yml
           committer: kyve-network <security@kyve.network>
           author: security@kyve.network
