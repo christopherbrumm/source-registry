@@ -44,15 +44,15 @@ jobs:
         run: python .github/build_registry.py .github/registry.yml
         working-directory: ${{ github.workspace }}
 
-      - name: Commit and push built registry on new branch
+      - name: Create Pull Request
         run: |
-          git config --local user.email "security@kyve.network"
-          git config --local user.name "kyve-network"
+          git config --global hub.protocol https
+          export GITHUB_TOKEN=${{ secrets.PAT_TOKEN }}
           next_branch="release/v1.${{ steps.increment_version.outputs.release_version }}"
           git checkout -b "$next_branch"
           git add .github/registry.yml
           git commit -m "🎉 Update registry.yml"
           git push origin "$next_branch"
-          # Create pull request
-          hub pull-request -m "Update registry.yml" -b "$next_branch" -h "main"
-        working-directory: ${{ github.workspace }}
+          hub pull-request -m "Update registry.yml" -b main -h "$next_branch"
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
