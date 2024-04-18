@@ -5,56 +5,49 @@ on:
     branches:
       - main
     types:
-      - closed
+      - opened
+      - synchronize
+      - reopened
+      - edited
     paths:
       - '**.yml'
 
 jobs:
-  build_registry:
+  validate_registry:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out the code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Install required Python packages
         run: pip install -r .github/requirements.txt
-        working-directory: ${{ github.workspace }}
-
-      - name: Install hub
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y hub
-
-      - name: Determine the latest release version
-        id: extract_version
-        run: |
-          current_branch=${GITHUB_REF#refs/heads/}
-          release_version=$(echo "$current_branch" | sed 's/[^0-9]*//g')
-          echo "::set-output name=release_version::$release_version"
-
-      - name: Increment release version
-        id: increment_version
-        run: |
-          previous_version=${{ steps.extract_version.outputs.release_version }}
-          release_version=$((previous_version + 1))
-          echo "::set-output name=release_version::$release_version"
 
       - name: Merge Source configs and write Source-Registry
-        run: python .github/build_registry.py .github/registry.yml
-        working-directory: ${{ github.workspace }}
+        run: python .github/validate_registry.py
 
-      - name: Create Pull Request
+  build_registry:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: validate_registry
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Install required Python packages
+        run: pip install -r .github/requirements.txt
+
+      - name: Merge Source configs and write Source-Registry
         run: |
-          git config --global hub.protocol https
-          git config --local user.email "security@kyve.network"
-          git config --local user.name "kyve-network"
-          export GITHUB_TOKEN=${{ secrets.PAT_TOKEN }}
-          next_branch="release/v1.${{ steps.increment_version.outputs.release_version }}"
-          git checkout -b "$next_branch"
-          git add .github/registry.yml
+          python .github/build_registry.py .github/registry.yml
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit"
+            exit 0
+          fi
           git commit -m "🎉 Update registry.yml"
-          git push origin "$next_branch"
-          hub pull-request -m "Update registry.yml" -b main -h "$next_branch"
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          git push
