@@ -919,7 +919,7 @@ osmosis-1:
         docs: https://docs.osmosis.zone/
         hex: '#8d07c7'
         logo: ar://u8kGlBx37seQCO1X5vQsc3Q8iO2CE-BHqsm0937poak
-        title: Osmosisss
+        title: Osmosis
         website: https://osmosis.zone/
     kyve-1:
       integrations:
@@ -937,7 +937,7 @@ osmosis-1:
         docs: https://docs.osmosis.zone/
         hex: '#8d07c7'
         logo: ar://u8kGlBx37seQCO1X5vQsc3Q8iO2CE-BHqsm0937poak
-        title: Osmosisss
+        title: Osmosis
         website: https://osmosis.zone/
   source-id: osmosis-1
 zetachain_7000-1:
