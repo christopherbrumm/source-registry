@@ -920,7 +920,7 @@ osmosis-1:
         hex: '#8d07c7'
         logo: ar://u8kGlBx37seQCO1X5vQsc3Q8iO2CE-BHqsm0937poak
         title: Osmosis
-        website: https://osmosis.zone/
+        website: https://osmosis.zone
     kyve-1:
       integrations:
         ksync:
@@ -938,7 +938,7 @@ osmosis-1:
         hex: '#8d07c7'
         logo: ar://u8kGlBx37seQCO1X5vQsc3Q8iO2CE-BHqsm0937poak
         title: Osmosis
-        website: https://osmosis.zone/
+        website: https://osmosis.zone
   source-id: osmosis-1
 zetachain_7000-1:
   codebase:
