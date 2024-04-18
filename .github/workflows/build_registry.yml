@@ -10,7 +10,7 @@ on:
       - reopened
       - edited
     paths:
-      - '**.yml'
+      - '**/*.yml'
 
 jobs:
   validate_registry:
