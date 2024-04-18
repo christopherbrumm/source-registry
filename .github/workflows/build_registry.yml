@@ -10,7 +10,7 @@ on:
       - reopened
       - edited
     paths:
-      - '**.yml'
+      - '**/*.yml'
 
 jobs:
   validate_registry:
@@ -52,4 +52,4 @@ jobs:
             exit 0
           fi
           git commit -m "🎉 Update registry.yml"
-          git push
+          git push origin HEAD:${{ github.head_ref }}
