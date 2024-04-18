@@ -1,4 +1,4 @@
-name: Merge Source configs and write Source-Registry
+name: Merge Source configs and push Source-Registry
 
 on:
   pull_request:
